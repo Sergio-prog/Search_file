@@ -73,5 +73,5 @@ if __name__ == "__main__":
 
     folder = r"D:/Games"  # or Path(r"D:/Games")
     search = Search(folder)
-    print(search.search_by_suffix(""))
+    print(search.search_by_suffix(".wav"))
     print(search.final)
