@@ -101,22 +101,27 @@ class Search:
         return correct_paths
 
     def search_by_content(self, file_search_content: str = None,
-                          file_search_types: Union[list, set] = ("txt", "md", "py", "sol",),
+                          file_search_types: Union[list, set] = ("txt",),
                           path_object_returns: bool = False):
         correct_paths = []
-        supported_files_types = ()
         for rootdir, dirs, files in os.walk(self.path):
             for file in files:
-                file_content = "".join(open(os.path.join(rootdir, file), "r").readlines())
-                if file_content in file_search_content:
-                    goal_path = str(Path(rootdir, file)) if not path_object_returns else Path(rootdir, file)
-                    correct_paths.append(goal_path)
+                if Path(file).suffix.replace(".", "") in file_search_types:
+                    try:
+                        file_content = "".join(open(os.path.join(rootdir, file), "r", encoding='utf-8').readlines())
+                    except UnicodeDecodeError:
+                        file_content = str(open(os.path.join(rootdir, file), "rb").readlines())
+
+                    if file_search_content in file_content:
+                        goal_path = str(Path(rootdir, file)) if not path_object_returns else Path(rootdir, file)
+                        correct_paths.append(goal_path)
+
+        return correct_paths
 
 
 if __name__ == "__main__":
     from pprint import pprint
 
-    folder = r"C:\Users\13579\Desktop\Final2"  # or Path(r"D:/Games")
+    folder = r"D:/Games"  # or Path(r"D:/Games")
     search = Search(folder)
-    print(search.search_by_content("Movavi"))
-    print(search.get_last_search_time)  # Returns the time it took to search
+    print(search.search_by_content("Buy BTC"))

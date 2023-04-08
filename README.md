@@ -1,4 +1,4 @@
-Program for searching any file in all of you computer
+A program to search for any file on all your computers using different parameters
 
 Example:
 
