@@ -100,11 +100,23 @@ class Search:
         self.final = end - start
         return correct_paths
 
+    def search_by_content(self, file_search_content: str = None,
+                          file_search_types: Union[list, set] = ("txt", "md", "py", "sol",),
+                          path_object_returns: bool = False):
+        correct_paths = []
+        supported_files_types = ()
+        for rootdir, dirs, files in os.walk(self.path):
+            for file in files:
+                file_content = "".join(open(os.path.join(rootdir, file), "r").readlines())
+                if file_content in file_search_content:
+                    goal_path = str(Path(rootdir, file)) if not path_object_returns else Path(rootdir, file)
+                    correct_paths.append(goal_path)
+
 
 if __name__ == "__main__":
     from pprint import pprint
 
-    folder = r"D:/Games"  # or Path(r"D:/Games")
+    folder = r"C:\Users\13579\Desktop\Final2"  # or Path(r"D:/Games")
     search = Search(folder)
-    print(search.search_by_size(10000, round_search_file_size=True, path_object_returns=True))
+    print(search.search_by_content("Movavi"))
     print(search.get_last_search_time)  # Returns the time it took to search
