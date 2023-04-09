@@ -100,9 +100,20 @@ class Search:
         self.final = end - start
         return correct_paths
 
-    def search_by_content(self, file_search_content: str = None,
-                          file_search_types: Union[list, set] = ("txt",),
+    def search_by_content(self, file_search_content: str = None, file_search_types: Union[list, set] = ("txt",),
                           path_object_returns: bool = False):
+        """
+                Returns all directories from the specified directory by content (binary or text content) in file and their type
+
+                Example:
+                    search = Search(r"C:/Games")
+
+                    print(search.search_by_content("Hello World!", file_search_types=["txt"]))
+
+                    \>>> 'C:\Games\osu!\Localisation\ru.txt'
+                """
+        start = time()
+
         correct_paths = []
         for rootdir, dirs, files in os.walk(self.path):
             for file in files:
@@ -116,6 +127,8 @@ class Search:
                         goal_path = str(Path(rootdir, file)) if not path_object_returns else Path(rootdir, file)
                         correct_paths.append(goal_path)
 
+        end = time()
+        self.final = end - start
         return correct_paths
 
 
@@ -124,4 +137,4 @@ if __name__ == "__main__":
 
     folder = r"D:/Games"  # or Path(r"D:/Games")
     search = Search(folder)
-    print(search.search_by_content("Buy BTC"))
+    print(search.search_by_content("lection"))
